@@ -23,6 +23,11 @@ namespace Tavis.Home
             return _Resources[name];
         }
 
+
+        public void Save(System.IO.MemoryStream stream)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 

@@ -64,6 +64,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Tavis.Link">
+      <HintPath>..\..\src\packages\Tavis.Link.0.4.1-beta\lib\portable-win+net40+sl40+wp71\Tavis.Link.dll</HintPath>
+    </Reference>
     <Reference Include="Tavis.UriTemplates">
       <HintPath>..\..\src\packages\Tavis.UriTemplates.0.1.2\lib\Net35\Tavis.UriTemplates.dll</HintPath>
     </Reference>
