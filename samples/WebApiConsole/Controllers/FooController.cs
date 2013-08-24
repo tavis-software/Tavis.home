@@ -11,12 +11,14 @@ namespace WebApiConsole.Controllers
     public class FooController : ApiController
     {
 
-        public HttpResponseMessage Get(HttpRequestMessage request)
+        [EntryPointRelation("http://example.org/rels/foo")]
+        public HttpResponseMessage Get(int id)
         {
             return null;
         }
 
-        public HttpResponseMessage Post(HttpRequestMessage request)
+        [EntryPointRelation("http://example.org/rels/foo")]
+        public HttpResponseMessage Post(int id)
         {
             return null;
         } 
@@ -25,14 +27,15 @@ namespace WebApiConsole.Controllers
     public class BarController : ApiController
     {
 
+        [EntryPointRelation("http://example.org/rels/bar")]
         public HttpResponseMessage Get(HttpRequestMessage request)
         {
             return null;
         }
 
-        public HttpResponseMessage Post(HttpRequestMessage request)
-        {
-            return null;
-        }
+        //public HttpResponseMessage Post(HttpRequestMessage request)
+        //{
+        //    return null;
+        //}
     }
 }
