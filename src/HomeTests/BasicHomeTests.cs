@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
-using Tavis.Home;
 using Tavis.IANA;
 using Xunit;
+using Tavis.Home;
 
 namespace HomeTests
 {
@@ -18,7 +19,7 @@ namespace HomeTests
         {
             // Doc needs to be at least an object
             var doc = HomeDocument.Parse("{}");
-
+            
             Assert.NotNull(doc);
         }
 
@@ -97,5 +98,51 @@ namespace HomeTests
             Assert.IsType<FormatsHint>(link.GetHints().Last());
         }
 
+        [Fact]
+        public void CreateHomeDocumentWithFormatsHints()
+        {
+            var doc = new HomeDocument();
+            var aboutLink = new AboutLink() { Target = new Uri("about", UriKind.Relative) };
+
+            aboutLink.AddHint<AllowHint>(h => h.AddMethod(HttpMethod.Get));
+            aboutLink.AddHint<FormatsHint>(h => h.AddMediaType("application/json"));
+
+            doc.AddResource(aboutLink);
+
+            var ms = new MemoryStream();
+            doc.Save(ms);
+            ms.Position = 0;
+
+            var outDoc = HomeDocument.Parse(ms);
+
+            var link = outDoc.GetResource("about");
+            Assert.IsType<AboutLink>(link);
+            Assert.IsType<AllowHint>(link.GetHints().First());
+            Assert.IsType<FormatsHint>(link.GetHints().Last());
+        }
+
+        [Fact]
+        public void CreateHomeDocumentWithLotsOfHints()
+        {
+            var doc = new HomeDocument();
+
+            doc.AddResource<AboutLink>(l =>
+            {
+                l.Target = new Uri("about", UriKind.Relative);
+                l.AddHint<AllowHint>(h => h.AddMethod(HttpMethod.Get));
+                l.AddHint<FormatsHint>(h => h.AddMediaType("application/json"));
+                l.AddHint<AcceptPostHint>(h => h.AddMediaType("application/vnd.tavis.foo+json"));
+                l.AddHint<AcceptPreferHint>(h => h.AddPreference("handling"));
+            });
+
+            var ms = new MemoryStream();
+            doc.Save(ms);
+            ms.Position = 0;
+
+            var st = new StreamReader(ms);
+            var s = st.ReadToEnd();
+
+            Assert.NotNull(s);
+        }
     }
 }
