@@ -18,7 +18,15 @@ namespace Tavis.Home
     {
         private readonly Dictionary<string, Link> _Resources = new Dictionary<string, Link>();
 
-        
+        /// <summary>
+        /// List of links to available resources
+        /// </summary>
+        public IEnumerable<Link> Resources
+        {
+            get { return _Resources.Values; }
+        }
+
+
         /// <summary>
         /// Add a typed link to the Home Document to identify an available resource
         /// </summary>

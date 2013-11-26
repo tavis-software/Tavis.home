@@ -57,6 +57,9 @@ namespace HomeTests
             Assert.Equal(resource.Target, new Uri("/test", UriKind.Relative));
             Assert.NotNull(resource2);
             Assert.Equal(resource2.Target, new Uri("/test2", UriKind.Relative));
+
+            Assert.Equal(2,doc.Resources.Count());
+
         }
 
         [Fact]
@@ -119,6 +122,7 @@ namespace HomeTests
             Assert.IsType<AboutLink>(link);
             Assert.IsType<AllowHint>(link.GetHints().First());
             Assert.IsType<FormatsHint>(link.GetHints().Last());
+            Assert.IsType<AboutLink>(outDoc.Resources.First());
         }
 
         [Fact]
@@ -141,8 +145,9 @@ namespace HomeTests
 
             var st = new StreamReader(ms);
             var s = st.ReadToEnd();
-
+           
             Assert.NotNull(s);
+           
         }
     }
 }
