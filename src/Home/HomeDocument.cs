@@ -8,24 +8,48 @@ using Newtonsoft.Json.Linq;
 
 namespace Tavis.Home
 {
+    /// <summary>
+    /// Document Object Model for the media type defined here http://tools.ietf.org/html/draft-nottingham-json-home-03
+    /// </summary>
+    /// <remarks>
+    /// Currently this class only supports serializing the JSON variant of this media type.
+    /// </remarks>
     public class HomeDocument
     {
         private readonly Dictionary<string, Link> _Resources = new Dictionary<string, Link>();
 
         
-
+        /// <summary>
+        /// Add a typed link to the Home Document to identify an available resource
+        /// </summary>
+        /// <param name="resource"></param>
         public void AddResource(Link resource)
         {
             _Resources.Add(resource.Relation, resource);
         }
 
+        /// <summary>
+        /// Retrieve a typed link based on the link relation name.
+        /// </summary>
+        /// <remarks>
+        /// Currently the specification only supports one resource per link relation type.
+        /// </remarks>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public Link GetResource(string name)
         {
             return _Resources[name];
         }
 
 
-        public void Save(System.IO.MemoryStream stream)
+        /// <summary>
+        /// Serialize the HomeDocument model as text to a Stream
+        /// </summary>
+        /// <remarks>
+        /// The stream will be closed when the method returns.
+        /// </remarks>
+        /// <param name="stream"></param>
+        public void Save(Stream stream)
         {
             var sb = new StringBuilder();
             var sw = new StringWriter(sb);
@@ -89,12 +113,24 @@ namespace Tavis.Home
 
         }
 
+        /// <summary>
+        /// Create a HomeDocument instance from a stream of JSON text that is formatted as per the json-home specification
+        /// </summary>
+        /// <param name="jsonStream"></param>
+        /// <param name="linkFactory">Optionally specifiy a linkFactory for creating strongly typed links.  If one is not provided the default LinkFactory will be created and only IANA registered links will be available as strong types.  All unrecognized link relations will be deserialized as the base Link class.</param>
+        /// <returns></returns>
         public static HomeDocument Parse(Stream jsonStream, LinkFactory linkFactory = null)
         {
             var sr = new StreamReader(jsonStream);
             return Parse(sr.ReadToEnd(), linkFactory);
         }
 
+        /// <summary>
+        /// Create a HomeDocument instance from a string of JSON text that is formatted as per the json-home specification
+        /// </summary>
+        /// <param name="jsonString"></param>
+        /// <param name="linkFactory">Optionally specifiy a linkFactory for creating strongly typed links.  If one is not provided the default LinkFactory will be created and only IANA registered links will be available as strong types.  All unrecognized link relations will be deserialized as the base Link class.</param>
+        /// <returns></returns>
         public static HomeDocument Parse(string jsonString, LinkFactory linkFactory = null)
         {
             var jDoc = JObject.Parse(jsonString);
@@ -102,7 +138,7 @@ namespace Tavis.Home
         }
 
 
-        public static HomeDocument Parse(JObject jObject, LinkFactory linkFactory = null)
+        private static HomeDocument Parse(JObject jObject, LinkFactory linkFactory = null)
         {
             if (linkFactory == null) linkFactory = new LinkFactory();
             
