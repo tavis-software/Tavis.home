@@ -46,6 +46,14 @@ namespace WebApiConsole.Controllers
             homeDocument.AddResource(barLink);
 
 
+            var bar2Link = new Link()
+            {
+                Relation = "http://example.org/rels/bar2",
+                Target = new Uri("bar/{id}", UriKind.Relative)
+            };
+         //   bar2Link.SetParameter("id","",new Uri("template/params/id", UriKind.Relative));
+            homeDocument.AddResource(bar2Link);
+
 
             var ms = new MemoryStream();
             homeDocument.Save(ms);

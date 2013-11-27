@@ -72,18 +72,26 @@ namespace Tavis.Home
             {
                     jsonWriter.WritePropertyName(resource.Relation);
                     jsonWriter.WriteStartObject();
-                    var parameters = resource.GetParameters(); 
-                    if (parameters != null && parameters.Count() > 0)
+                    var parameters = resource.GetParameterNames().ToList();
+                    var setParameters = resource.GetParameters().ToDictionary(k=> k.Name,v=> v); // These are params that actually have values set
+                    if (parameters.Any())
                     {
                         jsonWriter.WritePropertyName("href-template");
                         jsonWriter.WriteValue(resource.Target);
+                        
                         jsonWriter.WritePropertyName("href-values");
-                        foreach (var linkParameter in parameters)
+                        jsonWriter.WriteStartObject();
+                        foreach (var linkParameterName in parameters)
                         {
-                            jsonWriter.WritePropertyName(linkParameter.Name);
-                            jsonWriter.WriteValue(linkParameter.Identifier);
+                            
+                            jsonWriter.WritePropertyName(linkParameterName);
+                            LinkParameter linkParameter;
+                            if (setParameters.TryGetValue(linkParameterName,out linkParameter))
+                            {
+                                jsonWriter.WriteValue(linkParameter.Identifier);
+                            }
                         }
-
+                        jsonWriter.WriteEndObject();
                     }
                     else
                     {
