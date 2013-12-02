@@ -5,6 +5,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using Tavis.IANA;
 using Xunit;
 using Tavis.Home;
@@ -149,5 +151,45 @@ namespace HomeTests
             Assert.NotNull(s);
            
         }
+
+        [Fact]
+        public void CreateResourceWithPathParameter()
+        {
+            var doc = new HomeDocument();
+
+            doc.AddResource<AboutLink>(l =>
+            {
+                l.Target = new Uri("http://example.org:1001/about/{id}");
+            });
+
+            doc.AddResource<HelpLink>(l =>
+            {
+                l.Target = new Uri("http://example.org:1001/help/{id}");
+            });
+
+            var ms = new MemoryStream();
+            doc.Save(ms);
+            ms.Position = 0;
+
+            var st = new StreamReader(ms);
+            var s = st.ReadToEnd();
+           Assert.True(s.Contains("href-template"));
+            
+
+        }
+
+
+        [Fact]
+        public async Task LiveParse()
+        {
+            var httpClient = new HttpClient();
+
+            var response = await httpClient.GetAsync("http://birch:1001");
+
+            var homedocument = HomeDocument.Parse(await response.Content.ReadAsStreamAsync());
+
+
+        }
+
     }
 }

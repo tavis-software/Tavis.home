@@ -79,7 +79,7 @@ namespace Tavis.Home
                         jsonWriter.WritePropertyName("href-template");
                         jsonWriter.WriteValue(resource.Target);
                         
-                        jsonWriter.WritePropertyName("href-values");
+                        jsonWriter.WritePropertyName("href-vars");
                         jsonWriter.WriteStartObject();
                         foreach (var linkParameterName in parameters)
                         {
@@ -178,11 +178,19 @@ namespace Tavis.Home
                     }
                     else
                     {
-                        link.Target = new Uri(resource["href-template"].Value<string>(), UriKind.RelativeOrAbsolute);
+                        link.Target = new Uri((String)resource["href-template"], UriKind.RelativeOrAbsolute);
                         var hrefvars = resource.Value<JObject>("href-vars");
                         foreach (var hrefvar in hrefvars.Properties())
                         {
-                            link.SetParameter(hrefvar.Name, null, new Uri(hrefvar.Value<string>(), UriKind.RelativeOrAbsolute));  
+                            var hrefUri = (string)hrefvar;
+                            if (string.IsNullOrEmpty(hrefUri))
+                            {
+                                link.SetParameter(hrefvar.Name, null);
+                            }
+                            else
+                            {
+                                link.SetParameter(hrefvar.Name, null, new Uri(hrefUri, UriKind.RelativeOrAbsolute));
+                            }
                         }
                     }
 
