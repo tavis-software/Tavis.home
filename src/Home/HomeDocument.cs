@@ -86,9 +86,13 @@ namespace Tavis.Home
                             
                             jsonWriter.WritePropertyName(linkParameterName);
                             LinkParameter linkParameter;
-                            if (setParameters.TryGetValue(linkParameterName,out linkParameter))
+                            if (setParameters.TryGetValue(linkParameterName, out linkParameter))
                             {
                                 jsonWriter.WriteValue(linkParameter.Identifier);
+                            }
+                            else
+                            {
+                                jsonWriter.WriteValue("");
                             }
                         }
                         jsonWriter.WriteEndObject();

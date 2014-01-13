@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using Tavis;
 using Tavis.IANA;
 using Xunit;
 using Tavis.Home;
@@ -180,13 +181,24 @@ namespace HomeTests
 
 
         [Fact]
-        public async Task LiveParse()
+        public void CreateResource_with_extension_rel_and_template()
         {
-            var httpClient = new HttpClient();
+            var doc = new HomeDocument();
 
-            var response = await httpClient.GetAsync("http://birch:1001");
+            doc.AddResource<Link>(l =>
+            {
+                l.Relation = "http://webapibook.net/rels#issue-processor";
+                l.Target = new Uri("/issueprocessor/{id}{?action}", UriKind.Relative);
+            });
 
-            var homedocument = HomeDocument.Parse(await response.Content.ReadAsStreamAsync());
+
+            var ms = new MemoryStream();
+            doc.Save(ms);
+            ms.Position = 0;
+
+            var st = new StreamReader(ms);
+            var s = st.ReadToEnd();
+            Assert.True(s.Contains("href-template"));
 
 
         }
