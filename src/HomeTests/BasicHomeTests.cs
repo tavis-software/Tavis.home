@@ -179,6 +179,33 @@ namespace HomeTests
 
         }
 
+        [Fact]
+        public void CreateResourceWithPathParameterAndRelWithDots()
+        {
+            var doc = new HomeDocument();
+
+            doc.AddResource<Link>(l =>
+            {
+                l.Relation = "vnd.foo.about";
+                l.Target = new Uri("http://example.org:1001/about/{id}");
+            });
+
+            doc.AddResource<HelpLink>(l =>
+            {
+                l.Target = new Uri("http://example.org:1001/help/{id}");
+            });
+
+            var ms = new MemoryStream();
+            doc.Save(ms);
+            ms.Position = 0;
+
+            var st = new StreamReader(ms);
+            var s = st.ReadToEnd();
+            Assert.True(s.Contains("href-template"));
+
+
+        }
+
 
         [Fact]
         public void CreateResource_with_extension_rel_and_template()
@@ -202,6 +229,54 @@ namespace HomeTests
 
 
         }
+        
+         [Fact]
+        public void CreateResourceWithMultipleQueryParameters()
+        {
+            var doc = new HomeDocument();
+
+            doc.AddResource<Link>(l =>
+            {
+                l.Relation = "vnd.foo.about";
+                l.Target = new Uri("http://example.org:1001/about{?id,name}");
+            });
+
+
+            var ms = new MemoryStream();
+            doc.Save(ms);
+            ms.Position = 0;
+
+            var st = new StreamReader(ms);
+            var s = st.ReadToEnd();
+            Assert.True(s.Contains("href-template"));
+
+
+        }
+        //[Fact]
+        //public async Task LiveParse()
+        //{
+        //    var httpClient = new HttpClient();
+
+        //    var response = await httpClient.GetAsync("http://birch:1001");
+
+        //    var homedocument = HomeDocument.Parse(await response.Content.ReadAsStreamAsync());
+
+
+        //}
+
+    }
+
+        //[Fact]
+        //public async Task LiveParse()
+        //{
+        //    var httpClient = new HttpClient();
+
+        //    var response = await httpClient.GetAsync("http://birch:1001");
+
+        //    var homedocument = HomeDocument.Parse(await response.Content.ReadAsStreamAsync());
+
+
+        //}
 
     }
 }

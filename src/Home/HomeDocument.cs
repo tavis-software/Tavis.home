@@ -92,7 +92,7 @@ namespace Tavis.Home
                             }
                             else
                             {
-                                jsonWriter.WriteValue("");
+                                jsonWriter.WriteValue((object)null);
                             }
                         }
                         jsonWriter.WriteEndObject();
