@@ -72,8 +72,13 @@ namespace Tavis.Home
             {
                     jsonWriter.WritePropertyName(resource.Relation);
                     jsonWriter.WriteStartObject();
-                    var parameters = resource.GetParameterNames().ToList();
-                    var setParameters = resource.GetParameters().ToDictionary(k=> k.Name,v=> v); // These are params that actually have values set
+                    var parameterNames = resource.GetParameterNames();   
+                    var parameters = resource.ParameterDefinitions; // These are params that actually have values set
+                var missingDefs = parameterNames.Where(pn => parameters.All(p => p.Name != pn));
+                foreach (var missingDef in missingDefs)
+                {
+                    resource.DefineParameter(missingDef,null);
+                }
                     if (parameters.Any())
                     {
                         jsonWriter.WritePropertyName("href-template");
@@ -81,19 +86,11 @@ namespace Tavis.Home
                         
                         jsonWriter.WritePropertyName("href-vars");
                         jsonWriter.WriteStartObject();
-                        foreach (var linkParameterName in parameters)
+                        foreach (var parameterDefinition in parameters)
                         {
+                            jsonWriter.WritePropertyName(parameterDefinition.Name);
+                            jsonWriter.WriteValue(parameterDefinition.Identifier);
                             
-                            jsonWriter.WritePropertyName(linkParameterName);
-                            LinkParameter linkParameter;
-                            if (setParameters.TryGetValue(linkParameterName, out linkParameter))
-                            {
-                                jsonWriter.WriteValue(linkParameter.Identifier);
-                            }
-                            else
-                            {
-                                jsonWriter.WriteValue((object)null);
-                            }
                         }
                         jsonWriter.WriteEndObject();
                     }
@@ -189,11 +186,11 @@ namespace Tavis.Home
                             var hrefUri = (string)hrefvar;
                             if (string.IsNullOrEmpty(hrefUri))
                             {
-                                link.SetParameter(hrefvar.Name, null);
+                                link.DefineParameter(hrefvar.Name, null);
                             }
                             else
                             {
-                                link.SetParameter(hrefvar.Name, null, new Uri(hrefUri, UriKind.RelativeOrAbsolute));
+                                link.DefineParameter(hrefvar.Name,  new Uri(hrefUri, UriKind.RelativeOrAbsolute));
                             }
                         }
                     }

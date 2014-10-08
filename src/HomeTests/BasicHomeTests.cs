@@ -239,8 +239,12 @@ namespace HomeTests
             {
                 l.Relation = "vnd.foo.about";
                 l.Target = new Uri("http://example.org:1001/about{?id,name}");
+                foreach (var n in l.GetParameterNames())
+                {
+                    l.DefineParameter(n, null);
+                }
             });
-
+            
 
             var ms = new MemoryStream();
             doc.Save(ms);
@@ -279,4 +283,4 @@ namespace HomeTests
         //}
 
     }
-}
+
