@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Tavis;
 using Tavis.IANA;
+using Tavis.UriTemplates;
 using Xunit;
 using Tavis.Home;
 
@@ -238,11 +239,7 @@ namespace HomeTests
             doc.AddResource<Link>(l =>
             {
                 l.Relation = "vnd.foo.about";
-                l.Target = new Uri("http://example.org:1001/about{?id,name}");
-                foreach (var n in l.GetParameterNames())
-                {
-                    l.DefineParameter(n, null);
-                }
+                l.Template = new UriTemplate("http://example.org:1001/about{?id,name}");
             });
             
 

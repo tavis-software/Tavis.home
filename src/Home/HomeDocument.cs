@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Tavis.UriTemplates;
 
 namespace Tavis.Home
 {
@@ -72,33 +73,32 @@ namespace Tavis.Home
             {
                     jsonWriter.WritePropertyName(resource.Relation);
                     jsonWriter.WriteStartObject();
-                    var parameterNames = resource.GetParameterNames();   
-                    var parameters = resource.ParameterDefinitions; // These are params that actually have values set
-                var missingDefs = parameterNames.Where(pn => parameters.All(p => p.Name != pn));
-                foreach (var missingDef in missingDefs)
-                {
-                    resource.DefineParameter(missingDef,null);
-                }
-                    if (parameters.Any())
-                    {
-                        jsonWriter.WritePropertyName("href-template");
-                        jsonWriter.WriteValue(resource.Target);
-                        
-                        jsonWriter.WritePropertyName("href-vars");
-                        jsonWriter.WriteStartObject();
-                        foreach (var parameterDefinition in parameters)
-                        {
-                            jsonWriter.WritePropertyName(parameterDefinition.Name);
-                            jsonWriter.WriteValue(parameterDefinition.Identifier);
-                            
-                        }
-                        jsonWriter.WriteEndObject();
-                    }
-                    else
+                    if (resource.Template == null)
                     {
                         jsonWriter.WritePropertyName("href");
                         jsonWriter.WriteValue(resource.Target);
-                    }
+                    } else
+                    {
+                        jsonWriter.WritePropertyName("href-template");
+                        jsonWriter.WriteValue(resource.Template.ToString());
+
+
+                        var parameterNames = resource.Template.GetParameterNames();
+                        if (parameterNames.Any())
+                        {
+                            jsonWriter.WritePropertyName("href-vars");
+                            jsonWriter.WriteStartObject();
+                            foreach (var name in parameterNames)
+                            {
+                                jsonWriter.WritePropertyName(name);
+                                jsonWriter.WriteNull();
+                                //jsonWriter.WriteValue(parameterDefinition.Identifier);
+
+                            }
+                            jsonWriter.WriteEndObject();
+                        }
+                    } 
+                  
 
                 var hints = resource.GetHints();
                 if (hints != null && hints.Any())
@@ -167,7 +167,7 @@ namespace Tavis.Home
                 foreach (var resourceProp in resources.Properties())
                 {
                     
-                    var link = linkFactory.CreateLink(resourceProp.Name);
+                    var link = linkFactory.CreateLink(resourceProp.Name) as Link;
                     
                     var resource = resourceProp.Value as JObject;
 
@@ -179,20 +179,20 @@ namespace Tavis.Home
                     }
                     else
                     {
-                        link.Target = new Uri((String)resource["href-template"], UriKind.RelativeOrAbsolute);
+                        link.Template = new UriTemplate((String)resource["href-template"]);
                         var hrefvars = resource.Value<JObject>("href-vars");
-                        foreach (var hrefvar in hrefvars.Properties())
-                        {
-                            var hrefUri = (string)hrefvar;
-                            if (string.IsNullOrEmpty(hrefUri))
-                            {
-                                link.DefineParameter(hrefvar.Name, null);
-                            }
-                            else
-                            {
-                                link.DefineParameter(hrefvar.Name,  new Uri(hrefUri, UriKind.RelativeOrAbsolute));
-                            }
-                        }
+                        //foreach (var hrefvar in hrefvars.Properties())
+                        //{
+                        //    var hrefUri = (string)hrefvar;
+                        //    if (string.IsNullOrEmpty(hrefUri))
+                        //    {
+                        //        link.DefineParameter(hrefvar.Name, null);
+                        //    }
+                        //    else
+                        //    {
+                        //        link.DefineParameter(hrefvar.Name,  new Uri(hrefUri, UriKind.RelativeOrAbsolute));
+                        //    }
+                        //}
                     }
 
                     var hintsProp = resource.Property("hints");
