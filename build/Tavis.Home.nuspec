@@ -15,7 +15,6 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="..\src\Home\bin\release\Tavis.Home.dll" target="lib\portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10" />
-        <file src="..\src\Home\bin\release\Tavis.Home.XML" target="lib\portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10" />
+        <file src="..\artifacts\Home\lib\**\Tavis.Home.dll" target="lib" />
     </files>
 </package>
