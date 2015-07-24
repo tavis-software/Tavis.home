@@ -2,13 +2,17 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Tavis.Home</id>
-        <version>0.6.0-beta2</version>
+        <version>0.6.0-beta4</version>
         <authors>Darrel Miller</authors>
         <owners>Darrel Miller</owners>
         <projectUrl>https://github.com/tavis-software/Tavis.Home</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Implementation of a application/json-home</description>
-        <releaseNotes>Fixed bug in serialization of uri with multiple query parameters</releaseNotes>
+        <releaseNotes>
+          <![CDATA[
+            For full release notes see https://github.com/tavis-software/Tavis.Home/blob/master/ReleaseNotes.md
+            ]]>
+        </releaseNotes>
         <dependencies>
             <dependency id="Tavis.Link" version="2.0.4-beta2" />
             <dependency id="Newtonsoft.Json" version="6.0.5" />
