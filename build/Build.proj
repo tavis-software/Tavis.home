@@ -17,7 +17,7 @@
 
   <Target Name="Compile">
 	<MSBuild Projects="$(ProjectFilePCL)" 
-           Properties="Configuration=$(Configuration);SolutionDir=$(SolutionDir);OutputPath=$(ArtifactsDir)\Home\lib\portable-net45+sl5+wp8+win8+wpa81+MonoTouch1+MonoAndroid1"  />
+           Properties="Configuration=$(Configuration);SolutionDir=$(SolutionDir);OutputPath=$(ArtifactsDir)\Home\lib\portable-net45+netcore45+wpa81"  />
 
   </Target>
 
