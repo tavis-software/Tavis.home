@@ -52,11 +52,13 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\portable-net45+wp80+win8+wpa81+dnxcore50\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Tavis.Link">
-      <HintPath>..\..\packages\Tavis.Link.2.1.0-beta\lib\portable-net45+sl5+wp8+win8+wpa81+MonoTouch1+MonoAndroid1\Tavis.Link.dll</HintPath>
+    <Reference Include="Tavis.Link, Version=0.1.5938.41532, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Tavis.Link.2.5\lib\portable-net45+sl5+wp8+win8+wpa81+MonoTouch1+MonoAndroid1\Tavis.Link.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Tavis.UriTemplates">
-      <HintPath>..\..\packages\Tavis.UriTemplates.0.6.4\lib\portable-net45+netcore45+wpa81+wp8\Tavis.UriTemplates.dll</HintPath>
+    <Reference Include="Tavis.UriTemplates, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Tavis.UriTemplates.1.0.0\lib\portable-net45+netcore45+wpa81+wp8\Tavis.UriTemplates.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -50,13 +50,13 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Tavis.Link, Version=0.1.5746.34980, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Tavis.Link.2.1.0-beta\lib\portable-net45+sl5+wp8+win8+wpa81+MonoTouch1+MonoAndroid1\Tavis.Link.dll</HintPath>
+    <Reference Include="Tavis.Link, Version=0.1.5938.41532, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Tavis.Link.2.5\lib\portable-net45+sl5+wp8+win8+wpa81+MonoTouch1+MonoAndroid1\Tavis.Link.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Tavis.UriTemplates, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Tavis.UriTemplates.0.6.6-beta2\lib\Net45\Tavis.UriTemplates.dll</HintPath>
+      <HintPath>..\..\packages\Tavis.UriTemplates.1.0.0\lib\Net45\Tavis.UriTemplates.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="xunit">
       <HintPath>..\..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
@@ -75,6 +75,9 @@
       <Project>{151aef3f-322e-4968-9642-25857a4d2ed9}</Project>
       <Name>Home</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

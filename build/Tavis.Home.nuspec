@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Tavis.Home</id>
-        <version>0.6.0-beta5</version>
+        <version>1.0.0</version>
         <authors>Darrel Miller</authors>
         <owners>Darrel Miller</owners>
         <projectUrl>https://github.com/tavis-software/Tavis.Home</projectUrl>
@@ -14,7 +14,7 @@
             ]]>
         </releaseNotes>
         <dependencies>
-            <dependency id="Tavis.Link" version="2.0.4-beta2" />
+            <dependency id="Tavis.Link" version="2.5.0" />
             <dependency id="Newtonsoft.Json" version="6.0.5" />
         </dependencies>
     </metadata>
