@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http;
+﻿using System.Net.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApiConsole.Controllers
 {
-    public class FooController : ApiController
+    public class FooController : Controller
     {
-
         [EntryPointRelation("http://example.org/rels/foo")]
         public HttpResponseMessage Get(int id)
         {
@@ -21,12 +15,11 @@ namespace WebApiConsole.Controllers
         public HttpResponseMessage Post(int id)
         {
             return null;
-        } 
+        }
     }
 
-    public class BarController : ApiController
+    public class BarController : Controller
     {
-
         [EntryPointRelation("http://example.org/rels/bar")]
         public HttpResponseMessage Get(HttpRequestMessage request)
         {

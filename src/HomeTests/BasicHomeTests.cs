@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 using Tavis;
 using Tavis.IANA;
 using Tavis.UriTemplates;
@@ -17,13 +12,12 @@ namespace HomeTests
 {
     public class BasicHomeTests
     {
-        
         [Fact]
         public void ParseEmptyHomeDoc()
         {
             // Doc needs to be at least an object
             var doc = HomeDocument.Parse("{}");
-            
+
             Assert.NotNull(doc);
         }
 
@@ -45,7 +39,7 @@ namespace HomeTests
             var resource = doc.GetResource("http://example.org/rels/test");
 
             Assert.NotNull(resource);
-            Assert.Equal(resource.Target, new Uri("/test",UriKind.Relative));
+            Assert.Equal(resource.Target, new Uri("/test", UriKind.Relative));
         }
 
         [Fact]
@@ -62,15 +56,14 @@ namespace HomeTests
             Assert.NotNull(resource2);
             Assert.Equal(resource2.Target, new Uri("/test2", UriKind.Relative));
 
-            Assert.Equal(2,doc.Resources.Count());
-
+            Assert.Equal(2, doc.Resources.Count());
         }
 
         [Fact]
         public void RoundTripHomeDocument()
         {
             var doc = new HomeDocument();
-            doc.AddResource(new AboutLink() {Target = new Uri("about",UriKind.Relative)});
+            doc.AddResource(new AboutLink() {Target = new Uri("about", UriKind.Relative)});
 
             var ms = new MemoryStream();
             doc.Save(ms);
@@ -109,7 +102,7 @@ namespace HomeTests
         public void CreateHomeDocumentWithFormatsHints()
         {
             var doc = new HomeDocument();
-            var aboutLink = new AboutLink() { Target = new Uri("about", UriKind.Relative) };
+            var aboutLink = new AboutLink() {Target = new Uri("about", UriKind.Relative)};
 
             aboutLink.AddHint<AllowHint>(h => h.AddMethod(HttpMethod.Get));
             aboutLink.AddHint<FormatsHint>(h => h.AddMediaType("application/json"));
@@ -149,9 +142,8 @@ namespace HomeTests
 
             var st = new StreamReader(ms);
             var s = st.ReadToEnd();
-           
+
             Assert.NotNull(s);
-           
         }
 
         [Fact]
@@ -159,15 +151,9 @@ namespace HomeTests
         {
             var doc = new HomeDocument();
 
-            doc.AddResource<AboutLink>(l =>
-            {
-                l.Target = new Uri("http://example.org:1001/about/{id}");
-            });
+            doc.AddResource<AboutLink>(l => { l.Target = new Uri("http://example.org:1001/about/{id}"); });
 
-            doc.AddResource<HelpLink>(l =>
-            {
-                l.Target = new Uri("http://example.org:1001/help/{id}");
-            });
+            doc.AddResource<HelpLink>(l => { l.Target = new Uri("http://example.org:1001/help/{id}"); });
 
             var ms = new MemoryStream();
             doc.Save(ms);
@@ -175,9 +161,7 @@ namespace HomeTests
 
             var st = new StreamReader(ms);
             var s = st.ReadToEnd();
-           Assert.True(s.Contains("href-template"));
-            
-
+            Assert.True(s.Contains("href-template"));
         }
 
         [Fact]
@@ -191,10 +175,7 @@ namespace HomeTests
                 l.Target = new Uri("http://example.org:1001/about/{id}");
             });
 
-            doc.AddResource<HelpLink>(l =>
-            {
-                l.Target = new Uri("http://example.org:1001/help/{id}");
-            });
+            doc.AddResource<HelpLink>(l => { l.Target = new Uri("http://example.org:1001/help/{id}"); });
 
             var ms = new MemoryStream();
             doc.Save(ms);
@@ -203,8 +184,6 @@ namespace HomeTests
             var st = new StreamReader(ms);
             var s = st.ReadToEnd();
             Assert.True(s.Contains("href-template"));
-
-
         }
 
 
@@ -227,11 +206,9 @@ namespace HomeTests
             var st = new StreamReader(ms);
             var s = st.ReadToEnd();
             Assert.True(s.Contains("href-template"));
-
-
         }
-        
-         [Fact]
+
+        [Fact]
         public void CreateResourceWithMultipleQueryParameters()
         {
             var doc = new HomeDocument();
@@ -241,7 +218,7 @@ namespace HomeTests
                 l.Relation = "vnd.foo.about";
                 l.Template = new UriTemplate("http://example.org:1001/about{?id,name}");
             });
-            
+
 
             var ms = new MemoryStream();
             doc.Save(ms);
@@ -250,8 +227,6 @@ namespace HomeTests
             var st = new StreamReader(ms);
             var s = st.ReadToEnd();
             Assert.True(s.Contains("href-template"));
-
-
         }
         //[Fact]
         //public async Task LiveParse()
@@ -264,20 +239,17 @@ namespace HomeTests
 
 
         //}
-
     }
 
-        //[Fact]
-        //public async Task LiveParse()
-        //{
-        //    var httpClient = new HttpClient();
+    //[Fact]
+    //public async Task LiveParse()
+    //{
+    //    var httpClient = new HttpClient();
 
-        //    var response = await httpClient.GetAsync("http://birch:1001");
+    //    var response = await httpClient.GetAsync("http://birch:1001");
 
-        //    var homedocument = HomeDocument.Parse(await response.Content.ReadAsStreamAsync());
+    //    var homedocument = HomeDocument.Parse(await response.Content.ReadAsStreamAsync());
 
 
-        //}
-
-    }
-
+    //}
+}
