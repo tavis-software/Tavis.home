@@ -1,33 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web.Http;
-using System.Web.Http.Description;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Tavis;
 using Tavis.Home;
 using Tavis.IANA;
 
 namespace WebApiConsole.Controllers
 {
-    public class HomeController : ApiController
+    public class HomeController : Controller
     {
-
-        public HttpResponseMessage Get(HttpRequestMessage requestMessage)
+        public async Task Index()
         {
             var homeDocument = new HomeDocument();
 
 
             var fooLink = new Link()
-                {
-                    Relation = "http://example.org/rels/foo", 
-                    Target = new Uri("foo", UriKind.Relative)
-                };
+            {
+                Relation = "http://example.org/rels/foo",
+                Target = new Uri("foo", UriKind.Relative)
+            };
             var allowHint = new AllowHint();
             allowHint.AddMethod(HttpMethod.Get);
             allowHint.AddMethod(HttpMethod.Post);
@@ -51,28 +45,26 @@ namespace WebApiConsole.Controllers
                 Relation = "http://example.org/rels/bar2",
                 Target = new Uri("bar/{id}", UriKind.Relative)
             };
-         //   bar2Link.SetParameter("id","",new Uri("template/params/id", UriKind.Relative));
+            //   bar2Link.SetParameter("id","",new Uri("template/params/id", UriKind.Relative));
             homeDocument.AddResource(bar2Link);
 
 
             var ms = new MemoryStream();
             homeDocument.Save(ms);
             ms.Position = 0;
-            var streamContent = new StreamContent(ms);
-            return new HttpResponseMessage()
-                {
-                    Content = streamContent
-                };
+
+
+            await ms.CopyToAsync(this.Response.Body);
         }
 
 
         //public HttpResponseMessage Get2(HttpRequestMessage requestMessage)
         //{
 
-           
+
         //    var homeDocument = new HomeDocument();
 
-            
+
         //    IApiExplorer apiExplorer = Configuration.Services.GetApiExplorer();
 
         //    var resources = from ad in apiExplorer.ApiDescriptions
@@ -85,7 +77,7 @@ namespace WebApiConsole.Controllers
         //    {
         //        var apiDescription = res.First();
         //        var atts = apiDescription.ActionDescriptor.GetCustomAttributes<EntryPointRelationAttribute>();
-                
+
         //        // Get EntryPoint Link relation name
         //        var epr = atts.FirstOrDefault();
         //        if (epr != null)
@@ -125,9 +117,9 @@ namespace WebApiConsole.Controllers
         //    var streamContent = new StreamContent(stream);
         //    streamContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
         //    var responseMessage = new HttpResponseMessage() {Content = streamContent};
-            
+
         //    return responseMessage;
-            
+
         //}
 
         private string MakeQueryString(ApiDescription ad)
@@ -135,6 +127,4 @@ namespace WebApiConsole.Controllers
             return String.Empty;
         }
     }
-
-
 }

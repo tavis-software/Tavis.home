@@ -1,40 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Web.Http;
-using System.Web.Http.Description;
-using System.Web.Http.SelfHost;
-using Tavis;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace WebApiConsole
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-           
+            await WebHost.CreateDefaultBuilder<Startup>(args).Build().RunAsync();
+        }
+    }
 
-            var baseAddress = "http://localhost:8080";
-            var config = new HttpSelfHostConfiguration(baseAddress);
+    public class Startup
+    {
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddMvc();
+        }
 
-            config.Routes.MapHttpRoute("defaultWithId", "api/{controller}/{id}");
-            config.Routes.MapHttpRoute("default", "api/{controller}");
-            //config.Routes.MapHttpRoute("default", "api/{controller}/{id}", new {id= RouteParameter.Optional});
-
-
-            var server = new HttpSelfHostServer(config);
-
-
-            Console.WriteLine("Opening server at " + baseAddress);
-            server.OpenAsync().Wait();
-
-            Console.WriteLine("Press enter to shutdown server");
-            Console.ReadLine();
-            server.CloseAsync().Wait();
-
-
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            app.UseMvcWithDefaultRoute();
         }
     }
 }
